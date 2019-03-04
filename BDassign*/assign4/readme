@@ -1,0 +1,77 @@
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update; sudo apt install oracle-java8-installer
+
+sudo nano ~/.bashrc
+function set-title() {
+  if [[ -z "$ORIG" ]]; then
+    ORIG=$PS1
+  fi
+  TITLE="\[\e]2;$*\a\]"
+  PS1=${ORIG}${TITLE}
+}
+
+set-title master
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
+
+source ~/.bashrc
+
+
+
+sudo nano /etc/hosts
+
+172.31.22.174 master
+172.31.18.176 agent1
+172.31.23.192 agent2
+172.31.19.20  agent3
+172.31.25.116 agent4              
+172.31.35.182 agent5
+172.31.29.180 agent6
+
+
+sudo apt-get install scala
+
+(MASTER ONLY){
+
+ssh-keygen
+cat .ssh/ib_rsa.pup
+copy the whole thing 
+
+}
+
+(all)
+cat >> .ssh/authorized_keys
+paste and press ctrl + d
+
+
+wget http://www-us.apache.org/dist/spark/spark-2.3.2/spark-2.3.2-bin-hadoop2.7.tgz
+
+tar xvf spark-2.3.2-bin-hadoop2.7.tgz
+
+sudo mv spark-2.3.2-bin-hadoop2.7 /usr/local/spark
+
+sudo nano ~/.bashrc
+
+export PATH=$PATH:/usr/local/spark/bin
+
+source ~/.bashrc
+
+spark-env.sh(master only)
+cd /usr/local/spark/conf
+cp spark-env.sh.template spark-env.sh
+sudo nano spark-env.sh
+export SPARK_MASTER_HOST=master
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
+
+
+sudo nano slaves
+	master
+	agent1
+	agent2
+	agent3
+	agent4
+	agent5
+	agent6
+
+cd /usr/local/spark
+./sbin/start-all.sh
+./sbin/stop-all.sh
